@@ -3,6 +3,7 @@ package com.pnp.kotlinudemydelivery.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -34,11 +35,33 @@ class MainActivity : AppCompatActivity() {
         val email = editTextEmail?.text.toString()  //Null pointer exception
         val password = editTextPassword?.text.toString()  //Null pointer exception
 
-        Toast.makeText(this, "El email es: $email", Toast.LENGTH_LONG).show()
-        Toast.makeText(this, "El password es: $password", Toast.LENGTH_LONG).show()
+        if (isValidForm(email, password)){
+            Toast.makeText(this, "El formulario es valido", Toast.LENGTH_LONG).show()
+        }else{
+            Toast.makeText(this, "El formulario no es valido", Toast.LENGTH_LONG).show()
+        }
 
         Log.d("MainActivity", "El email es: $email")
         Log.d("MainActivity", "El password es: $password")
+    }
+
+    fun String.isEmailValid():Boolean{
+        return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
+    }
+
+    private fun isValidForm(email: String, password: String): Boolean{
+        if (email.isBlank()){
+            return false
+        }
+
+        if (password.isBlank()){
+            return false
+        }
+
+        if (!email.isEmailValid()){
+            return false
+        }
+        return true
     }
 
     private fun goToRegister(){
