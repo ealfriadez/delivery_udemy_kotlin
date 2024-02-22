@@ -10,6 +10,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import com.pnp.kotlinudemydelivery.R
+import com.pnp.kotlinudemydelivery.models.ResponseHttp
+import com.pnp.kotlinudemydelivery.models.User
+import com.pnp.kotlinudemydelivery.providers.UsersProviders
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -23,6 +29,8 @@ class RegisterActivity : AppCompatActivity() {
     var editTextPassword: EditText? = null
     var editTextConfirmPassword: EditText? = null
     var buttonRegister: Button? = null
+
+    var usersProviders = UsersProviders()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,23 +50,42 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun register(){
-        var firstName = editTextFirstName?.text.toString()
-        var lastName = editTextLastName?.text.toString()
-        var email = editTextEmail?.text.toString()
-        var phone = editTextPhone?.text.toString()
-        var password = editTextPassword?.text.toString()
-        var confirmPassword = editTextConfirmPassword?.text.toString()
+        val firstName = editTextFirstName?.text.toString()
+        val lastName = editTextLastName?.text.toString()
+        val email = editTextEmail?.text.toString()
+        val phone = editTextPhone?.text.toString()
+        val password = editTextPassword?.text.toString()
+        val confirmPassword = editTextConfirmPassword?.text.toString()
 
         if (isValidForm(firstName = firstName, lastName = lastName, email = email, phone = phone, password = password, confirmPassword = confirmPassword)){
+
+            val user = User(
+                name = firstName,
+                lastname = lastName,
+                email = email,
+                phone = phone,
+                password = password
+            )
+
+            usersProviders.register(user)?.enqueue(object: Callback<ResponseHttp>{
+                override fun onResponse(
+                    call: Call<ResponseHttp>,
+                    response: Response<ResponseHttp>
+                ) {
+                    Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "Response: $response")
+                    Log.d(TAG, "Body: ${response.body()}")
+                }
+
+                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
+                    Log.d(TAG, "Se produjo un error ${t.message}")
+                    Toast.makeText(this@RegisterActivity, "Se produjo un error ${t.message}", Toast.LENGTH_LONG).show()
+                }
+
+            })
+
             Toast.makeText(this, "El formulario es valido", Toast.LENGTH_LONG).show()
         }
-
-        Log.d(TAG, "Nombres: $firstName")
-        Log.d(TAG, "Apellidos: $lastName")
-        Log.d(TAG, "Correo electronico: $email")
-        Log.d(TAG, "Numero telfonico: $phone")
-        Log.d(TAG, "Contraseña: $password")
-        Log.d(TAG, "Confirme  contraseña: $confirmPassword")
     }
 
     fun String.isEmailValid():Boolean{
