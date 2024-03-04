@@ -73,7 +73,7 @@ class RegisterActivity : AppCompatActivity() {
                     response: Response<ResponseHttp>
                 ) {
                     Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_LONG).show()
-                    Log.d(TAG, "Response: $response")
+                    Log.d(TAG, "Response: ${response}")
                     Log.d(TAG, "Body: ${response.body()}")
                 }
 
