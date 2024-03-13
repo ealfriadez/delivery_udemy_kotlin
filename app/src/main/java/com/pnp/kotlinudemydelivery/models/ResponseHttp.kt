@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
 class ResponseHttp (
-    @SerializedName("success") val isSuccess: String,
+    @SerializedName("success") val isSuccess: Boolean,
     @SerializedName("message") val message: String,
     @SerializedName("data") val data: JsonObject,
     @SerializedName("error") val error: String
