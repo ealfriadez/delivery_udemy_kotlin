@@ -43,43 +43,6 @@ class MainActivity : AppCompatActivity() {
         getUserFromSession()
     }
 
-    private fun login11(){
-        val email = editTextEmail?.text.toString()  //Null pointer exception
-        val password = editTextPassword?.text.toString()  //Null pointer exception
-
-        if (isValidForm(email, password)){
-
-            usersProviders.login(email, password)?.enqueue(object: Callback<ResponseHttp>{
-                override fun onResponse(
-                    call: Call<ResponseHttp>,
-                    response: Response<ResponseHttp>
-                ) {
-                    Log.d("MainActivity", "Response: ${response.body()}")
-
-                    if (response.body()?.isSuccess == true) {
-                        Toast.makeText(this@MainActivity, response.body()?.message, Toast.LENGTH_LONG).show()
-
-                        saveUserInSession(response.body()?.data.toString())
-                        gotoClientHome()
-                    }
-                    else {
-                        Toast.makeText(this@MainActivity, "Los datos no son correctos", Toast.LENGTH_LONG).show()
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseHttp>, t: Throwable) {
-                    Log.d("MainActivity", "Hubo un error ${t.message}")
-                    Toast.makeText(this@MainActivity, "Hubo un error ${t.message}", Toast.LENGTH_LONG).show()
-                }
-
-            })
-        }else{
-            Toast.makeText(this, "El formulario no es valido", Toast.LENGTH_LONG).show()
-        }
-
-        //Log.d("MainActivity", "El password es: $password")
-    }
-
     private fun gotoClientHome(){
 
         val i = Intent(this, ClientHomeActivity::class.java)
@@ -107,6 +70,8 @@ class MainActivity : AppCompatActivity() {
 
                     if (response.body()?.isSuccess == true) {
                         Toast.makeText(this@MainActivity, response.body()?.message, Toast.LENGTH_LONG).show()
+                        saveUserInSession(response.body()?.data.toString())
+                        gotoClientHome()
                     }
                     else {
                         Log.d("MainActivity", "Los datos no son correctos")
