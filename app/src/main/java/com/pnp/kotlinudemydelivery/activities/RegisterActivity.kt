@@ -9,10 +9,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import com.google.gson.Gson
 import com.pnp.kotlinudemydelivery.R
+import com.pnp.kotlinudemydelivery.activities.client.home.ClientHomeActivity
 import com.pnp.kotlinudemydelivery.models.ResponseHttp
 import com.pnp.kotlinudemydelivery.models.User
 import com.pnp.kotlinudemydelivery.providers.UsersProviders
+import com.pnp.kotlinudemydelivery.utils.SharedPref
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -72,6 +75,12 @@ class RegisterActivity : AppCompatActivity() {
                     call: Call<ResponseHttp>,
                     response: Response<ResponseHttp>
                 ) {
+
+                    if(response.body()?.isSuccess == true){
+                        saveUserInSession(response.body()?.data.toString())
+                        gotoClientHome()
+                    }
+
                     Toast.makeText(this@RegisterActivity, response.body()?.message, Toast.LENGTH_LONG).show()
                     Log.d(TAG, "Response: ${response}")
                     Log.d(TAG, "Body: ${response.body()}")
@@ -86,6 +95,20 @@ class RegisterActivity : AppCompatActivity() {
 
             Toast.makeText(this, "El formulario es valido", Toast.LENGTH_LONG).show()
         }
+    }
+
+    private fun saveUserInSession(data: String){
+
+        val sharedPref = SharedPref(this)
+        val gson = Gson()
+        val user = gson.fromJson(data, User::class.java)
+        sharedPref.save("user", user)
+    }
+
+    private fun gotoClientHome(){
+
+        val i = Intent(this, ClientHomeActivity::class.java)
+        startActivity(i)
     }
 
     fun String.isEmailValid():Boolean{

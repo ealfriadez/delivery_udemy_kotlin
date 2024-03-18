@@ -92,7 +92,6 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "No es valido", Toast.LENGTH_LONG).show()
         }
 
-//        Log.d("MainActivity", "El password es: $password")
     }
 
     private fun getUserFromSession(){
