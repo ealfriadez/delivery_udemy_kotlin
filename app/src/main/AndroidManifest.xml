@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SelectActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.client.home.ClientHomeActivity"
             android:exported="false" />
         <activity

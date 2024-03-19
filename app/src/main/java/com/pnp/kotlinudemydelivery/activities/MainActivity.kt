@@ -43,9 +43,14 @@ class MainActivity : AppCompatActivity() {
         getUserFromSession()
     }
 
-    private fun gotoClientHome(){
+    private fun goToClientHome(){
 
         val i = Intent(this, ClientHomeActivity::class.java)
+        startActivity(i)
+    }
+
+    private fun goToSelectRol(){
+        val i = Intent(this, SelectActivity::class.java)
         startActivity(i)
     }
 
@@ -55,6 +60,12 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
         val user = gson.fromJson(data, User::class.java)
         sharedPref.save("user", user)
+
+        if(user.roles?.size!! > 1){ //TIENE MAS DE UN ROL
+            goToSelectRol()
+        }else{ //SOLO UN ROL (CLIENTE)
+            goToClientHome()
+        }
     }
 
     private fun login() {
@@ -71,7 +82,6 @@ class MainActivity : AppCompatActivity() {
                     if (response.body()?.isSuccess == true) {
                         Toast.makeText(this@MainActivity, response.body()?.message, Toast.LENGTH_LONG).show()
                         saveUserInSession(response.body()?.data.toString())
-                        gotoClientHome()
                     }
                     else {
                         Log.d("MainActivity", "Los datos no son correctos")
@@ -102,7 +112,7 @@ class MainActivity : AppCompatActivity() {
         if(!sharedPref.getData("user").isNullOrBlank()){
             //SI EL USUARIO EXISTE EN SESION
             val user = gson.fromJson(sharedPref.getData("user"), User:: class.java)
-            gotoClientHome()
+            goToClientHome()
         }
     }
 
