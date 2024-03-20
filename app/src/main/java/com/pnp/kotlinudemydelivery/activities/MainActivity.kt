@@ -12,6 +12,8 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.pnp.kotlinudemydelivery.R
 import com.pnp.kotlinudemydelivery.activities.client.home.ClientHomeActivity
+import com.pnp.kotlinudemydelivery.activities.delivery.home.DeliveryHomeActivity
+import com.pnp.kotlinudemydelivery.activities.restaurant.home.RestaurantHomeActivity
 import com.pnp.kotlinudemydelivery.models.ResponseHttp
 import com.pnp.kotlinudemydelivery.models.User
 import com.pnp.kotlinudemydelivery.providers.UsersProviders
@@ -45,11 +47,25 @@ class MainActivity : AppCompatActivity() {
 
     private fun goToClientHome(){
         val i = Intent(this, ClientHomeActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Eliminar el historial de pantallas
+        startActivity(i)
+    }
+
+    private fun goToRestaurantHome(){
+        val i = Intent(this, RestaurantHomeActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Eliminar el historial de pantallas
+        startActivity(i)
+    }
+
+    private fun goToDeliveryHome(){
+        val i = Intent(this, DeliveryHomeActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Eliminar el historial de pantallas
         startActivity(i)
     }
 
     private fun goToSelectRol(){
         val i = Intent(this, SelectActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK //Eliminar el historial de pantallas
         startActivity(i)
     }
 
@@ -105,9 +121,28 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
 
         if(!sharedPref.getData("user").isNullOrBlank()){
+
+            Log.d("MainActivity", "USUARIO SI EXISTE")
+
             //SI EL USUARIO EXISTE EN SESION
             val user = gson.fromJson(sharedPref.getData("user"), User:: class.java)
-            goToClientHome()
+
+            if(!sharedPref.getData("rol").isNullOrBlank()){
+
+                val rol = sharedPref.getData("rol")?.replace("\"", "")
+                Log.d("MainActivity", "ROL $rol")
+
+                if(rol == "RESTAURANTE"){
+                    goToRestaurantHome()
+                }else if(rol == "CLIENTE"){
+                    goToClientHome()
+                }else if(rol == "REPARTIDOR"){
+                    goToDeliveryHome()
+                }
+            }else{
+                Log.d("MainActivity", "ROL NO EXISTE")
+                goToClientHome()
+            }
         }
     }
 
