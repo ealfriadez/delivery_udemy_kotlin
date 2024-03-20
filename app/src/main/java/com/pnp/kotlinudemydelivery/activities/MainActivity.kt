@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun goToClientHome(){
-
         val i = Intent(this, ClientHomeActivity::class.java)
         startActivity(i)
     }
@@ -87,21 +86,17 @@ class MainActivity : AppCompatActivity() {
                         Log.d("MainActivity", "Los datos no son correctos")
                         Toast.makeText(this@MainActivity, "Los datos no son correctos", Toast.LENGTH_LONG).show()
                     }
-
                 }
 
                 override fun onFailure(p0: Call<ResponseHttp>, t: Throwable) {
                     Log.d("MainActivity", "Hubo un error ${t.message}")
                     Toast.makeText(this@MainActivity, "Hubo un error ${t.message}", Toast.LENGTH_LONG).show()
                 }
-
             })
-
         }
         else {
             Toast.makeText(this, "No es valido", Toast.LENGTH_LONG).show()
         }
-
     }
 
     private fun getUserFromSession(){
