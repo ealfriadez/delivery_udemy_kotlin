@@ -1,5 +1,6 @@
 package com.pnp.kotlinudemydelivery.models
 
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 
 class User(
@@ -16,5 +17,9 @@ class User(
 ) {
     override fun toString(): String {
         return "User(id=$id, name='$name', lastname='$lastname', email='$email', phone='$phone', image=$image, password='$password', isAvailable=$isAvailable, sessionToken=$sessionToken, roles=$roles)"
+    }
+
+    fun toJson(): String{
+        return Gson().toJson(this)
     }
 }
