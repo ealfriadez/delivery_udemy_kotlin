@@ -6,7 +6,7 @@ import java.net.NetworkInterface
 
 class ApiRoutes {
 
-    val API_URL = "http://192.168.1.9:3000/api/"
+    val API_URL = "http://172.31.2.216:3000/api/"
     val retrofit = RetrofitClient()
 
     fun getUsersRoutes(): UsersRoutes{
