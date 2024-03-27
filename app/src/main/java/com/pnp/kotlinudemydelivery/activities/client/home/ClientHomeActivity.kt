@@ -19,7 +19,6 @@ import com.pnp.kotlinudemydelivery.utils.SharedPref
 class ClientHomeActivity : AppCompatActivity() {
 
     private val TAG = "ClientHomeActivity"
-   // var buttonLogout: Button? = null
     var sharedPref: SharedPref? = null
     var bottomNavigation: BottomNavigationView? = null
 
@@ -27,10 +26,8 @@ class ClientHomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_client_home)
         sharedPref = SharedPref(this)
-    //    buttonLogout = findViewById(R.id.btn_logout)
-    //    buttonLogout?.setOnClickListener{
-    //        logout()
-   //     }
+
+        openFragment(ClientCAtegoriesFragment())
 
         bottomNavigation = findViewById(R.id.bottom_navigation)
         bottomNavigation?.setOnItemSelectedListener {
@@ -46,7 +43,7 @@ class ClientHomeActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.item_home -> {
+                R.id.item_profile -> {
                     openFragment(ClientProfileFragment())
                     true
                 }
